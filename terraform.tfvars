@@ -13,22 +13,22 @@ cidrs       = {
 }
 
 ### Security group ###
-localip = "198.48.234.3/32"
-
+#localip = "198.48.234.3/32"
+localip = "54.202.20.157/32"
 ### Domain Name ###
 domain_name = "terransible"
 
 ## Database ###
-engine_version = "5.6.27"
-dbname = "wp-db-name"
-dbuser = "wp-db-users"
-dbpassword = "wp-db-password"
-instanceclass = "t2.micro"
+engine_version = "5.7.25"
+dbname = "wpdbterransible"
+dbuser = "wpdbuser"
+dbpassword = "wpdbpassword"
+instanceclass = "db.t2.micro"
 
 ### EC2 Instance ###
 dev_instance_type = "t2.micro"
-dev_ami = "ami-06a134062219ad132"
-key_name = "kryptonite"
+dev_ami = "ami-02bcbb802e03574ba"
+key_name = "kryptonite-ec2"
 public_key_path = "/root/.ssh/kryptonite.pub"
 #public_key_path = "C:\\Users\\Wilson Leite\\Desktop\\AWS Keys\\Jira-DEV-keypair.pem"  ##gerar outra chave pro ansible acessar o host
 
@@ -49,6 +49,6 @@ health_check_type = "EC2"
 desired_capacity = 2
 
 ### Route 53 ###
-delegation_set = "Z1DR3036IEBTE9"
+delegation_set = "N2VGSN1F8GB9FW"
 
 ## teste

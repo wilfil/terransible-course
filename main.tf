@@ -33,7 +33,7 @@ resource "aws_iam_role" "s3_access_role" {
 
   assume_role_policy = <<EOF
 {
-  "Version": "2017-10-17",
+  "Version": "2012-10-17",
   "Statement": [
   {
     "Action": "sts:AssumeRole",
@@ -73,7 +73,7 @@ resource "aws_route_table" "wp_public_rt" {
   vpc_id = "${aws_vpc.wp_vpc.id}"
 
   route {
-    cidr_block = "0.0.0.0"
+    cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.wp_internet_gateway.id}"
   }
 
@@ -336,7 +336,7 @@ resource "random_id" "wp_code_bucket" {
 }
 
 resource "aws_s3_bucket" "code" {
-  bucket        = "${var.domain_name}_${random_id.wp_code_bucket.dec}"
+  bucket        = "${var.domain_name}-${random_id.wp_code_bucket.dec}"
   acl           = "private"
   force_destroy = true
 
@@ -381,14 +381,14 @@ resource "aws_instance" "wp_dev" {
 
   provisioner "local-exec" {
     command = <<EOD
-    cat <<EOF > aws_hosts
-    [dev]
-    ${aws_instance.wp_dev.public_ip}
-    [dev:vars]
-    s3code=${aws_s3_bucket.code.bucket}
-    domain=${var.domain_name}
-    EOF
-    EOD
+cat <<EOF > aws_hosts
+[dev]
+${aws_instance.wp_dev.public_ip}
+[dev:vars]
+s3code=${aws_s3_bucket.code.bucket}
+domain=${var.domain_name}
+EOF
+EOD
   }
 
   provisioner "local-exec" {
@@ -506,7 +506,7 @@ resource "aws_route53_record" "www" {
   type    = "A"
 
   alias {
-    name                   = "${aws_elb.wp_elb.name}"
+    name                   = "${aws_elb.wp_elb.dns_name}"
     zone_id                = "${aws_elb.wp_elb.zone_id}"
     evaluate_target_health = false
   }
